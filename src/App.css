@@ -1,38 +1,116 @@
 .App {
-  text-align: center;
+	text-align: center;
+	display: grid;
+	background: #061311;
+	height: 100vh;
+	grid-template-columns: 1fr 3fr;
+	grid-template-rows: 0.1fr 2.7fr 0.2fr;
+	grid-template-areas:
+		"nav nav"
+		"sidebar main"
+		"sidebar footer";
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+nav {
+	grid-area: nav;
+	z-index: 100;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+main {
+	grid-area: main;
+	overflow-y: auto;
+	padding-top: 2rem;
+	margin-bottom: 0;
+	margin-top: 0.5rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.sidebar {
+	grid-area: sidebar;
+	background-color: #fff;
+	overflow-y: auto;
 }
 
-.App-link {
-  color: #61dafb;
+footer {
+	grid-area: footer;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	margin-top: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a {
+	text-decoration: none;
+}
+
+.message-container {
+	margin-inline: 2vw;
+	max-width: 70%;
+	min-width: 10%;
+	display: flex;
+	background-color: #eee;
+	border-radius: 18px;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-bottom: 2vh;
+}
+
+.message-text {
+	padding: 1em;
+}
+
+.message-container {
+	margin-inline: 5vw;
+	max-width: 70%;
+	min-width: 10%;
+	display: flex;
+	background-color: #eee;
+	border-radius: 18px;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-bottom: 2vh;
+}
+
+.timespan {
+	font-size: 0.8em;
+	align-self: flex-end;
+	padding: 0.4em;
+	padding-right: 0.6em;
+	font-style: italic;
+	color: #777;
+	padding-left: 1.8em;
+}
+
+.text-container {
+	background-color: #eee;
+	border-radius: 12px;
+	padding-bottom: 0.7em;
+	padding-top: 0.7em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+@media only screen and (max-width: 1000px) {
+	.App {
+		text-align: center;
+		display: grid;
+		background: #061311;
+		height: 100vh;
+		grid-template-columns: 1fr;
+		grid-template-rows: 0.5fr 10fr 0fr 0fr;
+		grid-template-areas:
+			"nav"
+			"main"
+			"sidebar"
+			"footer";
+	}
+	.App.sidebarOpen {
+		grid-template-columns: 1.3fr 1fr;
+		grid-template-rows: 0.5fr 10fr 1fr;
+		grid-template-areas:
+			"nav nav"
+			"sidebar main"
+			"sidebar footer";
+	}
+	.header {
+		background-color: #4caf50;
+	}
 }
