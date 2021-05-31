@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../App.css";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -6,13 +6,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
+import AddIcon from "@material-ui/icons/Add";
 import {
 	fade,
 	makeStyles,
 	createMuiTheme,
 	ThemeProvider,
 } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 const mytheme = createMuiTheme({
 	palette: {
@@ -89,9 +90,10 @@ export default function Header({
 	sideBarToggle,
 	setSideBarToggle,
 	Screen,
-	counterRef,
+	socketRef,
 	setCurrentContact,
 }) {
+	const [localRoom, setLocalRoom] = useState("");
 	const classes = useStyles();
 	return (
 		<div className='header'>
@@ -109,12 +111,12 @@ export default function Header({
 								<MenuIcon />
 							</IconButton>
 							<Typography className={classes.title} variant='h6' noWrap>
-								Ido's Messages App - {counterRef.current} connections
+								Ido's Messages App - ID:
 							</Typography>
 							<div className={classes.search}>
-								<div className={classes.searchIcon}>
-									<SearchIcon />
-								</div>
+								<IconButton onClick={(e) => setCurrentContact(localRoom)}>
+									<AddIcon />
+								</IconButton>
 								<InputBase
 									placeholder='Search…'
 									classes={{
@@ -122,7 +124,7 @@ export default function Header({
 										input: classes.inputInput,
 									}}
 									inputProps={{ "aria-label": "search" }}
-									onChange={(e) => setCurrentContact(e.target.value)}
+									onChange={(e) => setLocalRoom(e.target.value)}
 								/>
 							</div>
 						</Toolbar>

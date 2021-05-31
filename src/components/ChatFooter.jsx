@@ -18,15 +18,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function ChatFooter({
-	setMessage,
-	message,
-	setMessages,
-	messages,
-	onMessageSubmit,
-	login,
-}) {
+export default function ChatFooter({ onMessageSubmit, login }) {
 	const classes = useStyles();
+	const [localMessage, setLocalMessage] = useState({
+		message: "",
+		time: Date(),
+		sender: login,
+	});
 	return (
 		<Grid container spacing={0} className={classes.root} style={{}}>
 			<Grid item xs={1} />
@@ -36,14 +34,15 @@ export default function ChatFooter({
 						id='filled-textarea'
 						label='Send a message'
 						multiline
-						value={message.message}
+						value={localMessage.message}
 						onKeyDown={(e) => {
 							if (e.key === "Enter") {
-								onMessageSubmit(e);
+								onMessageSubmit(e, localMessage);
+								setLocalMessage({ message: "" });
 							}
 						}}
 						onChange={(e) =>
-							setMessage({
+							setLocalMessage({
 								message: e.target.value,
 								time: Date(),
 								sender: login,
@@ -57,13 +56,8 @@ export default function ChatFooter({
 								<InputAdornment
 									position='end'
 									onClick={(e) => {
-										onMessageSubmit(e);
-
-										setMessage({
-											message: "",
-											time: null,
-											sender: null,
-										});
+										onMessageSubmit(e, localMessage);
+										setLocalMessage({ message: "" });
 									}}
 									style={{ paddingBottom: "0.7em" }}>
 									<IconButton>

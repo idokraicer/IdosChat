@@ -4,14 +4,9 @@ import Message from "./Message";
 
 // Sockets
 
-export default function Chat({
-	login,
-	messages,
-	setMessages,
-	socketRef,
-	message,
-}) {
+export default function Chat({ login, messages }) {
 	const renderChat = () => {
+		console.log(messages);
 		return messages.map((message, index) => {
 			return (
 				<Message
@@ -30,6 +25,7 @@ export default function Chat({
 
 	useEffect(() => {
 		renderChat();
+		console.log("Messages changed - chat");
 	}, [messages]);
 
 	const scrollRef = useRef();

@@ -16,7 +16,7 @@ export default function Message({ message, prevMessage, login }) {
 				<span style={{ color: "#FF0000", fontWeight: "bold" }}>
 					{login
 						? ""
-						: prevMessage === null || prevMessage.sender === message.sender
+						: prevMessage?.sender === message.sender
 						? ""
 						: message.sender + ": "}
 				</span>

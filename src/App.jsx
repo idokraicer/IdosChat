@@ -22,40 +22,10 @@ function App() {
 	const [messages, setMessages] = useState([]);
 	const socketRef = useRef();
 	const counterRef = useRef();
-	const [currentContact, setCurrentContact] = useState();
+	const [currentContact, setCurrentContact] = useState(null);
+	const [prevContact, setPrevContact] = useState(null);
 
-	useEffect(() => {
-		socketRef.current = io.connect("http://localhost:3001");
-		socketRef.current.on("message", ({ message, time, sender }, room) => {
-			if (room === currentContact) {
-				setMessages([...messages, { message, time, sender }]);
-			}
-		});
-		socketRef.current.on("count", (count) => {
-			counterRef.current = count;
-		});
-		return () => socketRef.current.disconnect();
-	}, [messages]);
-
-	useEffect(() => {
-		socketRef.current.emit("join-room", currentContact);
-	}, [currentContact]);
-	// Refs
-
-	const onMessageSubmit = (e) => {
-		socketRef.current.emit("message", message, currentContact);
-		e.preventDefault();
-		setMessage({ message: "", time: Date(), sender: login });
-	};
-
-	const getWindowDimensions = () => {
-		const { innerWidth: width, innerHeight: height } = window;
-		return {
-			width,
-			height,
-		};
-	};
-
+	//useEffects()
 	useEffect(() => {
 		setContacts([
 			{
@@ -81,8 +51,42 @@ function App() {
 					bs: "harness real-time e-markets",
 				},
 			},
+			{
+				id: "all",
+				name: "Leanne Graham",
+				username: "Bret",
+				email: "Sincere@april.biz",
+				address: {
+					street: "Kulas Light",
+					suite: "Apt. 556",
+					city: "Gwenborough",
+					zipcode: "92998-3874",
+					geo: {
+						lat: "-37.3159",
+						lng: "81.1496",
+					},
+				},
+				phone: "1-770-736-8031 x56442",
+				website: "hildegard.org",
+				company: {
+					name: "Romaguera-Crona",
+					catchPhrase: "Multi-layered client-server neural-net",
+					bs: "harness real-time e-markets",
+				},
+			},
 		]);
+		socketRef.current = io.connect("http://localhost:3001");
+		console.log("I loaded []");
 	}, []);
+
+	useEffect(() => {
+		socketRef.current.emit("join-room", prevContact, currentContact);
+		socketRef.current.on("recieve-message", ({ message, time, sender }, room) => {
+			if(room === currentContact)
+			setMessages([...messages, { message, time, sender }]);
+		});
+		return () => {};
+	});
 
 	useEffect(async () => {
 		const { value: text } = await Swal.fire({
@@ -105,6 +109,27 @@ function App() {
 			console.log(`You're connected with id: ${socketRef.current.id}`);
 		});
 	}, []);
+
+	useEffect(() => {
+		socketRef.current.emit("join-room", prevContact, currentContact);
+		setMessages([]);
+	}, [currentContact]);
+
+	// Refs
+
+	const onMessageSubmit = (e, msg) => {
+		socketRef.current.emit("send-message", msg, currentContact);
+		e.preventDefault();
+		setMessage({ message: "", time: Date(), sender: login });
+	};
+
+	const getWindowDimensions = () => {
+		const { innerWidth: width, innerHeight: height } = window;
+		return {
+			width,
+			height,
+		};
+	};
 
 	return (
 		<div className={"App " + (sideBarToggle ? "sidebarOpen" : "")}>
@@ -135,6 +160,7 @@ function App() {
 					setContacts={setContacts}
 					currentContact={currentContact}
 					setCurrentContact={setCurrentContact}
+					setPrevContact={setPrevContact}
 				/>
 			</div>
 

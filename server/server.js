@@ -10,17 +10,30 @@ const PORT = 3001;
 io.on("connection", (socket) => {
 	console.log(socket.id);
 
-	socket.on("message", ({ message, time, sender }, room) => {
-		console.log("message event to room " + room);
+	socket.on("send-message", ({ message, time, sender }, room = "all") => {
 		if (message !== "") {
-			if (room === null) {
-				socket.emit("message", { message, time, sender });
-				console.log(`Message: ${message}`);
-			} else socket.to(room).emit("message", { message, time, sender });
+			// if (room === null || room === "" || room === "all") {
+			io.emit("recieve-message", { message, time, sender }, (room = "all"));
+			console.log(`Message: ${message} was send without a room`);
+			console.log();
+			/*}  else {
+				io.to(room).emit("recieve-message", { message, time, sender });
+				console.log(`Message: ${message} was sent to room: ${room}`);
+			} */
 		}
 	});
-	socket.on("join-room", (room) => {
+
+	socket.on("join-room", (prevRoom, room) => {
+		socket.leave(prevRoom);
 		socket.join(room);
+		console.log(
+			`User ${socket.id} left room ${prevRoom} and joined room ${room}`
+		);
+		console.log(`Participants in room ${room} are:`);
+		var connections = io.sockets.adapter.rooms.get(room);
+		for (let c of connections) {
+			console.log(c);
+		}
 	});
 });
 

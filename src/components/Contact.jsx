@@ -33,10 +33,15 @@ export default function Contact({
 	contact,
 	index,
 	last,
+	setPrevContact,
 }) {
 	const classes = useStyles();
 	return (
-		<a onClick={() => setCurrentContact(contact.id)}>
+		<a
+			onClick={() => {
+				setPrevContact(currentContact);
+				setCurrentContact(contact.id);
+			}}>
 			<ListItem className={classes.listitem} alignItems='flex-start'>
 				<ListItemAvatar>
 					<Avatar

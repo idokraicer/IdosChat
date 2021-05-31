@@ -94,23 +94,21 @@ a {
 		display: grid;
 		background: #061311;
 		height: 100vh;
-		grid-template-columns: 1fr;
-		grid-template-rows: 0.5fr 10fr 0fr 0fr;
-		grid-template-areas:
-			"nav"
-			"main"
-			"sidebar"
-			"footer";
-	}
-	.App.sidebarOpen {
-		grid-template-columns: 1.3fr 1fr;
+		grid-template-columns: 0fr 1fr;
 		grid-template-rows: 0.5fr 10fr 1fr;
 		grid-template-areas:
 			"nav nav"
 			"sidebar main"
 			"sidebar footer";
+		transition: all 0.5s;
+	}
+	.App.sidebarOpen {
+		grid-template-columns: 1.3fr 1fr;
+		transition: all 0.5s;
 	}
 	.header {
 		background-color: #4caf50;
+	}
+	.sidebar {
 	}
 }
